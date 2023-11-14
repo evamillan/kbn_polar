@@ -21,18 +21,16 @@ import { i18n } from '@osd/i18n';
 import { AggGroupNames } from '../../../src/plugins/data/public';
 import { Schemas } from '../../../src/plugins/vis_default_editor/public';
 
-import tableVisTemplate from './kbn-polar-vis.html';
-import { getKbnPolarVisualizationController } from './vis_controller';
 import { kbnPolarRequestHandler } from './data_load/kbn-polar-request-handler';
 import { kbnPolarResponseHandler } from './data_load/kbn-polar-response-handler';
 import { KbnPolarOptions } from './components/kbn_polar_vis_options_lazy';
 import { VIS_EVENT_TO_TRIGGER } from '../../../src/plugins/visualizations/public';
 import './index.scss'
 import image from './images/icon-polar.svg';
-
+import { PolarVis } from './components/polar_vis';
 
 // define the visType object, which kibana will use to display and configure new Vis object of this type.
-export function kbnPolarVisTypeDefinition(core, context) {
+export function kbnPolarVisTypeDefinition() {
   return {
     type: 'polar',
     name: 'kbn_polar',
@@ -43,13 +41,12 @@ export function kbnPolarVisTypeDefinition(core, context) {
     description: i18n.translate('visTypeKbnPolar.visDescription', {
       defaultMessage: 'Visualize Polar charts'
     }),
-    visualization: getKbnPolarVisualizationController(core, context),
     getSupportedTriggers: () => {
       return [VIS_EVENT_TO_TRIGGER.filter];
     },
     visConfig: {
       defaults: {},
-      template: tableVisTemplate
+      component: PolarVis
     },
     editorConfig: {
       optionsTemplate: KbnPolarOptions,

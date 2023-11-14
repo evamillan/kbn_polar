@@ -17,22 +17,30 @@
  * under the License.
  */
 
-import { PluginInitializerContext  } from '../../../src/core/public';
-import { npSetup, npStart } from 'ui/new_platform';
-import { plugin } from '.';
+import React from 'react';
+import { Polar } from 'react-chartjs-2';
+import { euiPaletteColorBlind } from '@elastic/eui';
 
-import { TablePluginSetupDependencies } from './plugin';
-import { TablePluginStartDependencies } from './plugin';
+export const PolarVis = ({visData}) => {
+  const colorPalette = euiPaletteColorBlind({rotations: 3});
+  const chartOptions = {
+    legend: {
+      display: false
+    }
+  };
+  const labels = visData.tables[0].rows.map(bucket => bucket[0]?.value);
+  const data = visData.tables[0].rows.map(bucket => bucket[1]?.value);
+  const chartData = {
+    datasets: [{ data, backgroundColor: colorPalette }],
+    labels
+  };
 
-const plugins: Readonly<TablePluginSetupDependencies> = {
-  visualizations: npSetup.plugins.visualizations,
-};
-
-const startData: Readonly<TablePluginStartDependencies> = {
-  data: npStart.plugins.data
+  return (
+    <div className="kbn-polar">
+      <Polar
+        options={chartOptions}
+        data={chartData}
+      />
+    </div>
+  )
 }
-
-const pluginInstance = plugin({} as PluginInitializerContext);
-
-export const setup = pluginInstance.setup(npSetup.core, plugins);
-export const start = pluginInstance.start(npStart.core, startData);

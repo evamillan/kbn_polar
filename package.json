@@ -16,7 +16,7 @@
     "url": "https://github.com/dlumbrer/kbn_polar"
   },
   "dependencies": {
-    "chart.js": "2.7.1",
-    "randomcolor": "0.5.3"
+    "chart.js": "^2.9.4",
+    "react-chartjs-2": "^2.11.2"
   }
 }
